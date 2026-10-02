@@ -1,0 +1,22 @@
+{
+    "JoJolion Sample)": {
+        "default": ["Nerves of Steel BB [V130 H120]", "000000"],
+        "Josuke": ["Nerves of Steel BB [V130 H120]", "004b66"],
+        "Josuke_Narrador": ["CCSamaritanTall-Regular", "004b66"],
+        "Joshu": ["Nerves of Steel BB [V130 H120]", "01340e"],
+        "Joshu_Grito": ["CCSoothsayer", "01340e"]
+    },
+    "My Style Set 1": {
+        "default": ["Nerves of Steel BB [V110 L100]", 14, "000000"],
+        "SFX": ["CCALikelyStory [CAPS STROKE]", 16, "000000"],
+        "Narrator": ["CCSamaritanTall-Regular", 14, "000000"],
+        "Narr": ["CCSamaritanTall-Regular", 14, "000000"],
+        "Whisper": ["CCHushHush [V120]", "000000"],
+        "Josuke": ["Nerves of Steel BB [V130 H120 L100 CAPS]", 14, "043d44"]
+    },
+    "My Style Set 2": {
+        "default": ["Ready for Anything BB [L90]", "000000"],
+        "Narrator": ["CCSoliloquous [H90]", "000000"],
+        "Handwritten": ["CCScoundrel-Bold [V110 CAPS]", "000000"]
+    }
+}
