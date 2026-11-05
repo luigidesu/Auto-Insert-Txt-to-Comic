@@ -2,6 +2,12 @@
 
 v1.5.2 is the first public release. Earlier versions were internal builds, and their notes are kept below.
 
+## v1.5.3
+- Added: OpenType settings at the top of the script, one on/off per Character panel button (ligatures, contextual and stylistic alternates, ordinals, fractions, swash, titling, ornaments, oldstyle figures).
+- Changed: Stylistic Alternates and Ordinals are now off by default (v1.5.2 had them on).
+- Changed: the script now shows up in its own "Plastic Tears" section of File > Scripts.
+- Added: `textLanguage` setting for the dictionary language. It used to always be Spanish, and it still is by default.
+
 ## v1.5.2
 - Fixed: quote styling and "Remove Quotes" did nothing for curly quotes (“ ”) in v1.5 and v1.5.1.
 - Fixed: a `Página` page marker wasn't recognized.

@@ -1,8 +1,10 @@
 /*
 <javascriptresource>
 <name>Auto Insert Txt to Comic [Plastic Tears]</name>
+<enableinfo>true</enableinfo>
+<category>Plastic Tears</category>
 <about>
-Auto Insert Txt to Comic v1.5.2 by Plastic Tears
+Auto Insert Txt to Comic v1.5.3 by Plastic Tears
 
 https://plastictears.com/
 </about>
@@ -12,7 +14,7 @@ https://plastictears.com/
 
 /*
 --------------------------------------------------------------------------------
-Auto Insert Txt to Comic v1.5.2
+Auto Insert Txt to Comic v1.5.3
 by Luigi (https://plastictears.com/)
 
 Inspired by the original Insert Txt to Comic script:
@@ -191,8 +193,54 @@ var QUOTE_RED_B = 20;
 // that isn't near-black/near-white). false = ***three*** only swaps the font, like **two** and *one*.
 var MARKDOWN_BOLDITALIC_RED = true;
 
+// OpenType features: the buttons at the bottom of the Character panel. true = on, false = off.
+// Applied to every layer the script makes. A font that doesn't have a feature just ignores it.
+
+var standardLigatures      = true;  // "fi" button: f+i, f+l... drawn as one joined letter. On by default in Photoshop
+var contextualAlternates   = true;  // swaps a letter depending on its neighbours. Comic fonts use it for the crossbar I and to vary repeated letters
+var discretionaryLigatures = true;  // "st" button: the fancier ligatures (s+t, c+t...)
+var swash                  = false; // "A" button: decorative tails and flourishes
+var stylisticAlternates    = false;  // "aa" button: the font's alternate letter shapes
+var titlingAlternates      = false; // "T" button: capitals drawn for big title sizes
+var ordinals               = false;  // "1st" button: the "st" in 1st, the "a"/"o" in 1a/1o become small raised letters
+var fractions              = true;  // "1/2" button: 1/2 becomes a real fraction glyph
+var ornaments              = false; // Type > OpenType > Ornaments: letters become the font's dingbats
+var oldstyleFigures        = false; // Type > OpenType > Oldstyle: numbers that go above/below the line like lowercase letters
+
+// Dictionary language. Copy one exactly (capitals matter). Anything misspelled becomes English.
+
+/* englishLanguage, ukenglishLanguage, canadianEnglishLanguage, spanishLanguage, catalanLanguage,
+standardPortugueseLanguage, brazilianPortugueseLanguage, standardFrenchLanguage, canadianFrenchLanguage,
+standardGermanLanguage, germanLanguageReformed1996, oldGermanLanguage, swissGermanLanguage,
+italianLanguage, dutchLanguage, danishLanguage, finnishLanguage, swedishLanguage,
+bokmalNorwegianLanguage, nynorskNorwegianLanguage, polishLanguage, russianLanguage, czechLanguage,
+slovakLanguage, hungarianLanguage, romanianLanguage, bulgarianLanguage, croatianLanguage,
+slovenianLanguage, serbianLanguage, greekLanguage, turkishLanguage, estonianLanguage, latvianLanguage,
+lithuanianLanguage, indonesianLanguage, japaneseLanguage, chineseLanguage, arabicLanguage,
+hebrewLanguage, thaiLanguage, hindiLanguage, tamilLanguage */
+
+var textLanguage = "spanishLanguage";
+
+/* 
+Only for people writing their own scripts: the feature codes Photoshop records when you click those buttons on an EXISTING layer (textOverrideFeatureName).
+This script makes each layer from scratch, so it doesn't need them. Magic numbers, don't touch.
+
+swash 808465718
+standard ligatures 808465719
+contextual alternates 808465720
+discretionary ligatures 808465721
+stylistic alternates 808465968
+titling 808465969
+ordinals 808465970
+fractions 808465971
+ornaments 808466227
+
+A code only lets ITS feature through: put two features in one step with one code and only one applies.
+
+// NEVER use 808466228 or 808466229 ("0074"/"0075"): they jam Photoshop's text engine until you restart it. */
+
 // version + links shown in the About dialog
-var SCRIPT_VERSION = "1.5.2";
+var SCRIPT_VERSION = "1.5.3";
 var URL_SITE = "https://plastictears.com/";
 var URL_GITHUB = "https://github.com/luigidesu/Auto-Insert-Txt-to-Comic";
 
@@ -1481,14 +1529,21 @@ function buildTextStyle(look, font, red, pg) {
     ts.putDouble(sid("verticalScale"), look.vScale);
     ts.putDouble(sid("horizontalScale"), look.hScale);
     ts.putEnumerated(sid("autoKern"), sid("autoKern"), sid("opticalKern"));
-    ts.putEnumerated(sid("textLanguage"), sid("textLanguage"), sid("spanishLanguage")); // English is englishLanguage
+    ts.putEnumerated(sid("textLanguage"), sid("textLanguage"), sid(textLanguage));
     ts.putBoolean(sid("autoLeading"), true);
-    ts.putBoolean(sid("contextualLigatures"), true);
-    ts.putBoolean(sid("connectionForms"), true);
-    ts.putBoolean(sid("altligature"), true);
-    ts.putBoolean(sid("ordinals"), true);
-    ts.putBoolean(sid("stylisticAlternates"), true);
-    ts.putBoolean(sid("fractions"), true);
+    // OpenType switches up top. A "make" takes every key at once (no feature codes needed);
+    // the Contextual Alternates button is two keys.
+    ts.putBoolean(sid("ligature"), standardLigatures);
+    ts.putBoolean(sid("contextualLigatures"), contextualAlternates);
+    ts.putBoolean(sid("connectionForms"), contextualAlternates);
+    ts.putBoolean(sid("altligature"), discretionaryLigatures);
+    ts.putBoolean(sid("swash"), swash);
+    ts.putBoolean(sid("stylisticAlternates"), stylisticAlternates);
+    ts.putBoolean(sid("titling"), titlingAlternates);
+    ts.putBoolean(sid("ordinals"), ordinals);
+    ts.putBoolean(sid("fractions"), fractions);
+    ts.putBoolean(sid("ornaments"), ornaments);
+    if (oldstyleFigures) ts.putEnumerated(sid("figureStyle"), sid("figureStyle"), sid("proportionalOldStyle"));
     return ts;
 }
 

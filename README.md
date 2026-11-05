@@ -50,7 +50,9 @@ Only asterisks that form a real span count as markup. Everything else stays as l
 
 **Point-text speakers**: speakers matching `pointTextRegex` (default: `SFX`, `SFX_B`, `SFX_W`, `Handwritten`, `Mano`, `Sign`, `Hand`) are laid out in their box and then converted to point text, which makes them easier to warp afterwards. Edit the regex at the top of the script to change the list.
 
-**Fixed settings**: every layer gets the same paragraph settings (centered, hyphenation off, Latin/CJK single-line composer), Smooth anti-aliasing, contextual alternates/ligatures on and the Spanish dictionary, so the result doesn't depend on what Photoshop's Character/Paragraph panels were last set to.
+**Fixed settings**: every layer gets the same paragraph settings (centered, hyphenation off, Latin/CJK single-line composer) and Smooth anti-aliasing, so the result doesn't depend on what Photoshop's Character/Paragraph panels were last set to.
+
+**OpenType features and dictionary language**: the settings at the top of the script (`standardLigatures`, `contextualAlternates`, `ordinals`, `fractions`...) turn each OpenType button of the Character panel on or off for every layer (standard/discretionary ligatures, contextual and stylistic alternates, ordinals, fractions, swash, titling, ornaments, oldstyle figures). `textLanguage` picks the dictionary (`"spanishLanguage"`, `"englishLanguage"`, `"brazilianPortugueseLanguage"`...). The full list is in the comment above it; anything misspelled becomes English.
 
 ## Translation .txt format
 
