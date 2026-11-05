@@ -131,4 +131,4 @@ When something doesn't line up, a log file (`Auto Insert Txt to Comic Log.txt`) 
 
 ## Feedback
 
-Tested on documents from 1200px to 8600px, grayscale and color. If you run it on other material, feedback and bug reports are very welcome: open an issue here, or message me on Discord (**luigidesu**).
+Tested on documents from 1200px to 8600px, grayscale and color. Only tested in Photoshop CC 2019 If you run it on other material, feedback and bug reports are very welcome: open an issue here, or message me on Discord (**luigidesu**).
