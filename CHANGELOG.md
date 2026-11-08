@@ -2,6 +2,9 @@
 
 v1.5.2 is the first public release. Earlier versions were internal builds, and their notes are kept below.
 
+## v1.5.4
+- Fixed: on a page that already had a collapsed `Text` group, the new text was placed above the group instead of inside it.
+
 ## v1.5.3
 - Added: OpenType settings at the top of the script, one on/off per Character panel button (ligatures, contextual and stylistic alternates, ordinals, fractions, swash, titling, ornaments, oldstyle figures).
 - Changed: Stylistic Alternates and Ordinals are now off by default (v1.5.2 had them on).

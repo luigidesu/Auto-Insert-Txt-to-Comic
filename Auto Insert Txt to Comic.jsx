@@ -4,7 +4,7 @@
 <enableinfo>true</enableinfo>
 <category>Plastic Tears</category>
 <about>
-Auto Insert Txt to Comic v1.5.3 by Plastic Tears
+Auto Insert Txt to Comic v1.5.4 by Plastic Tears
 
 https://plastictears.com/
 </about>
@@ -14,7 +14,7 @@ https://plastictears.com/
 
 /*
 --------------------------------------------------------------------------------
-Auto Insert Txt to Comic v1.5.3
+Auto Insert Txt to Comic v1.5.4
 by Luigi (https://plastictears.com/)
 
 Inspired by the original Insert Txt to Comic script:
@@ -240,7 +240,7 @@ A code only lets ITS feature through: put two features in one step with one code
 // NEVER use 808466228 or 808466229 ("0074"/"0075"): they jam Photoshop's text engine until you restart it. */
 
 // version + links shown in the About dialog
-var SCRIPT_VERSION = "1.5.3";
+var SCRIPT_VERSION = "1.5.4";
 var URL_SITE = "https://plastictears.com/";
 var URL_GITHUB = "https://github.com/luigidesu/Auto-Insert-Txt-to-Comic";
 
@@ -965,8 +965,8 @@ function processPage(data, origDPI, csvMap, mismatchLogs) {
     }
 
     var lines = constructLineObjectsForPage(pages[pageIdx].split(/\r?\n/), lastSpeaker);
-    var textGroup;
-    try { textGroup = doc.layerSets.getByName("Text"); }
+    var textGroup, oldGroup = null;
+    try { textGroup = oldGroup = doc.layerSets.getByName("Text"); }
     catch (e) {
         rethrowIfCancel(e);
         textGroup = doc.layerSets.add();
@@ -982,7 +982,11 @@ function processPage(data, origDPI, csvMap, mismatchLogs) {
         w: doc.width.value,
         h: doc.height.value,
         gray: doc.mode === DocumentMode.GRAYSCALE,
-        rgb: doc.mode === DocumentMode.RGB
+        rgb: doc.mode === DocumentMode.RGB,
+        // An already existing "Text" group may be collapsed, and then the new layer
+        // lands above it, outside. The first layer gets checked and moved in; the
+        // rest follow it, since a layer made over one inside the group stays inside.
+        oldGroup: oldGroup
     };
 
     var scaleFactor = origDPI / 72;
@@ -1192,6 +1196,12 @@ function createTypesetLayer(rawContent, styleString, fontSize, hexColor, placeme
     }
 
     var layerId = makeTextLayer(text, ranges, box, look, pg);
+    if (pg.oldGroup) {
+        var made = app.activeDocument.activeLayer;
+        if (made.parent.typename !== "LayerSet" || made.parent.id !== pg.oldGroup.id) made.move(pg.oldGroup, ElementPlacement.PLACEATBEGINNING);
+        selectLayerById(layerId);
+        pg.oldGroup = null;
+    }
 
     // Centre the glyphs on the OCR box. Up to v1.3.5 this first marqueed the box
     // and ran a TypeR-style expand/contract pass over it (up to 17 selection ops
